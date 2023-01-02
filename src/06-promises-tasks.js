@@ -99,8 +99,18 @@ function getFastestPromise(array) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+async function chainPromises(array, action) {
+  let prom;
+  for (let i = 0; i < array.length; i += 1) {
+    try {
+      // eslint-disable-next-line
+      const currProm = await array[i];
+      prom = prom ? action(prom, currProm) : currProm;
+    } catch (err) {
+      // err
+    }
+  }
+  return prom;
 }
 
 module.exports = {
